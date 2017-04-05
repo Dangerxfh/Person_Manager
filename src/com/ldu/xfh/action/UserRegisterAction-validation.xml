@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.2//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+	<validators>
+		<field name="user.email">
+			<field-validator type="email">
+				<message>请输入正确的邮箱格式</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.username">
+			<field-validator type="regex">
+				<param name="expression"><![CDATA[(\w{2,16})]]></param> 
+				<message>用户名应为2~16位的字母或数字</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.userpass">
+			<field-validator type="regex">
+				<param name="expression"><![CDATA[(\w{3,16})]]></param> 
+				<message>密码应为3~16位的字母或数字</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.sex">
+			<field-validator type="requiredstring">
+        		<param name="trim">true</param>
+        		<message>性别不能为空</message>
+        	</field-validator>  
+		</field>
+		<field name="user.age">
+			<field-validator type="requiredstring">
+        		<param name="trim">true</param>
+        		<message>年龄不能为空</message>
+        	</field-validator>    
+		</field>
+		
+		<field name="user.phone">
+			<field-validator type="int">
+				<param name="max">99999999999</param>
+				<param name="min">10000000000</param>
+				<message>电话号码应为11位的数字</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.address">
+			<field-validator type="requiredstring">
+        		<param name="trim">true</param>
+        		<message>地址不能为空</message>
+        	</field-validator>    
+		</field>
+		
+		<field name="user.birth">
+			<field-validator type="requiredstring">
+        		<param name="trim">true</param>
+        		<message>生日不能为空</message>
+        	</field-validator>    
+		</field>
+	</validators>

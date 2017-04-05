@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.2//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+	<validators>
+		<field name="user.email">
+			<field-validator type="email">
+				<message>请输入正确的邮箱格式</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.username">
+			<field-validator type="regex">
+				<param name="expression"><![CDATA[(\w{2,16})]]></param> 
+				<message>用户名应为2~16位的字母或数字</message>
+			</field-validator>
+		</field>
+		
+		<field name="user.userpass">
+			<field-validator type="regex">
+				<param name="expression"><![CDATA[(\w{3,16})]]></param> 
+				<message>密码应为3~16位的字母或数字</message>
+			</field-validator>
+		</field>
+		
+	</validators>
