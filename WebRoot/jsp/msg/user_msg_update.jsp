@@ -28,44 +28,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	<div class="container">
    	<div class="row">
    		<div class="col-xs-10 col-xs-offset-1">
-   		
-   			<form action="user/UpdateMsg">
+   			<form action="user/UpdateMsg" method="post">
 				<!--  指定user的id,因为hibernate的session缓存中的user.id为空  -->
    				<input type="hidden" name="user.id" value="${sessionScope.user.id}"/>
-   				
-   				
+    			
     			<div class="form-group">
-    				<s:fielderror name="user.username"/>
-    				UserName:<input name="user.username" class="form-control"  required="required" placeholder="userName"/>
-    				
+    				UserName:<input name="user.username" class="form-control" pattern="^[0-9a-zA-Z]{2,16}$"  title="密码应为2~16的字母或数字" value="${sessionScope.user.username}" required="required" placeholder="userName"/>
     			</div>
-    			<div class="form-group">	
-    				<s:fielderror name="user.sex"/>				
+    			
+    			<div class="form-group">					
 	    			Men:<input type="radio" name="user.sex"  required="required" value="Men"/>	    			
 	    			Women:<input type="radio" name="user.sex"  required="required" value="Women"/>
 
     			</div>	
+    			
     			<div class="form-group">
-    				<s:fielderror name="user.age"/>
-    				Age:<input name="user.age"  required="required" class="form-control" placeholder="Age"/>
+    				Age:<input name="user.age"  required="required" value="${sessionScope.user.age}" class="form-control" placeholder="Age"/>
     			</div>
     			
     			<div class="form-group">
-    				<s:fielderror name="user.email"/>
-    				Email:<input type="email" name="user.email"   required="required" class="form-control" placeholder="Email"/>
+    				Email:<input type="email" name="user.email" value="${sessionScope.user.email}"  required="required" class="form-control" placeholder="Email"/>
     			</div>
+    			
     			<div class="form-group">
-    				<s:fielderror name="user.birth"/>
-    				BirthDay:<input  type="date" name="user.birth"  required="required" class="form-control" placeholder="BirthDay"/>
+    				BirthDay:<input  type="date" name="user.birth" value="${sessionScope.user.birth}" required="required" class="form-control" placeholder="BirthDay"/>
     			</div>
+    			
     			<div class="form-group">
-    				<s:fielderror name="user.phone"/>
-    				Phone:<input name="user.phone"  required="required" class="form-control" placeholder="Phone"/>
+    				Phone:<input name="user.phone" value="${sessionScope.user.phone}" pattern="^[0-9]{11}$"  title="电话号码应为11位数字" required="required" class="form-control" placeholder="Phone"/>
     			</div>
+    			
     			<div class="form-group">
-    				<s:fielderror name="user.address"/>
     				Address:
-    				<input name="user.address" required="required" class="form-control" placeholder="Detail Address"/>
+    				<input name="user.address" value="${sessionScope.user.address}" required="required" class="form-control" placeholder="Detail Address"/>
     			</div>
     			
     			<div class="form-group">

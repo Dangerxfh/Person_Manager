@@ -10,22 +10,28 @@
     <title>Login</title>
 	
 		 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	
+		 <script src="js/jquery-1.5.1.js"></script>	
   </head>
-  
+  <script type="text/javascript">
+  	$(function(){
+  		$("input").click(function(){
+  			$("#alert").hide();
+  		});
+  	});
+  </script>
   <body>
   <div class="container">
   <h1>个人信息管理系统--用户登录</h1>
   	<hr>
   		
   			<c:if test="${param.log_status=='error'}">
-  				<div class="alert alert-danger">
+  				<div class="alert alert-danger" id="alert">
   					用户名或密码错误！！！
   				</div>
   			</c:if>
   		
   		
-  		<form action="user/Login">
+  		<form action="user/Login" method="post">
   		<div class="form-group">
   			UserName:<input name="user.username" placeholder="UserName" class="form-control"  value='<s:property value="#username"/>'/>
   			<s:fielderror name="user.username"></s:fielderror>

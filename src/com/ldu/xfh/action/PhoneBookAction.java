@@ -1,8 +1,12 @@
 package com.ldu.xfh.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.RequestAware;
@@ -20,6 +24,7 @@ public class PhoneBookAction extends ActionSupport implements SessionAware,Reque
 	private RelService<LinkMan> relService=new RelService<LinkMan>();
 	private Map<String,Object> session;
 	private Map<String,Object> request;
+	private List<String> selectList; 
 	
 	
 	//添加联系人
@@ -40,8 +45,7 @@ public class PhoneBookAction extends ActionSupport implements SessionAware,Reque
 		else{
 			
 			relService.sava(linkMan);
-			List<LinkMan> linkManList=(List)session.get("linkManList");
-			linkManList.add(linkMan);
+			List<LinkMan> linkManList=relService.getByParam(LinkMan.class,"userByUserId", (User)session.get("user"));
 			session.put("linkManList",linkManList);
 			return "success";
 		}
@@ -56,7 +60,7 @@ public class PhoneBookAction extends ActionSupport implements SessionAware,Reque
 		if(session.get("user")==null){
 			return "logout";
 		}
-		
+				
 		ActionContext.getContext().put("linkMans",linkMans);
 		return "success";	
 	}
@@ -84,6 +88,27 @@ public class PhoneBookAction extends ActionSupport implements SessionAware,Reque
 		
 		return "success";
 	}
+	
+	//删除选择项
+	public String phoneBookDeleteSelected() throws Exception{
+		for(String id:getSelectList()){
+			List<LinkMan> userList=relService.getByParam(LinkMan.class,"id",Integer.parseInt(id));
+			relService.delete(userList.get(0));
+			List<LinkMan> linkManList=relService.getByParam(LinkMan.class,"userByUserId",(User)session.get("user"));
+			session.put("linkManList",linkManList);
+		}
+		return "success";
+	}
+	
+	
+	public List<String> getSelectList() {
+		return selectList;
+	}
+
+	public void setSelectList(List<String> selectList) {
+		this.selectList = selectList;
+	}
+
 	public LinkMan getLinkMan() {
 		return linkMan;
 	}

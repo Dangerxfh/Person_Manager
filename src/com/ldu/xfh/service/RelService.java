@@ -28,7 +28,6 @@ public class RelService <T> implements Service<T>{
 	public  List<T> getByParam( Class t,String param,Object value)throws Exception{
 		Session session=HibernateUtil.getSession();
 		Transaction tx=session.beginTransaction();
-		
 		List<T> tList=session.createCriteria(t).add(Restrictions.eq(param, value)).list();
 		tx.commit();
 		session.close();
@@ -44,7 +43,6 @@ public class RelService <T> implements Service<T>{
 		//创建 Criteria
 		Criteria criteria=session.createCriteria(t);
 		//查询
-		
 		for(String param:params.keySet()){
 			if(type==1)
 			 tList=criteria.add(Restrictions.eq(param, params.get(param))).list();
@@ -55,8 +53,6 @@ public class RelService <T> implements Service<T>{
 		session.close();
 		return tList;
 	}
-	
-	
 	
 	//删除操作
 	@Override
@@ -75,7 +71,6 @@ public class RelService <T> implements Service<T>{
 		Transaction  tx=session.beginTransaction();
 		session.update(t);
 		tx.commit();
-		session.close();
-		
+		session.close();	
 	}
 }

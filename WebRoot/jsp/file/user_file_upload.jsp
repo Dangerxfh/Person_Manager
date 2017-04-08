@@ -35,8 +35,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 		});
 		
+		 if(${requestScope.msg!=null}){
+		 	$("#error").show();
+		 }
+		 
 		$("#filename").click(function(){
 			$("#alert").hide();
+			$("#error").hide();
 		});
 	});	
 	</script>
@@ -45,6 +50,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   <c:import url="user_file_top.jsp"></c:import>
     <div class="container">
+    	<div class="alert alert-warning" id="error" style="display: none;">
+		   		文件大小应小于15M！！！
+		   	</div>
     <div class="alert alert-danger" style="display: none;" id="alert">
     	请选择文件！！！
     </div>
@@ -52,7 +60,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<div class="form-group">
     			文件标题：<input name="fileEntity.fltitle" class="form-control" required="required"/>
     		</div>
+    		
     		<div class="fileupload">
+    		 <h5>文件大小应小于15M</h5>
     			<s:file name="upload" class="fileupload" required="required" id="filename"/>
     		</div>
     		

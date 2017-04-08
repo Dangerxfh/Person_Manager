@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	}
   	
   	.b{
-  		margin-left: 200px;
+  		margin-left: 180px;
   	}
   </style>
   <body>

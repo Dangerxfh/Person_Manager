@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<package name="xfh_user" namespace="/user" extends="struts-default">
-		
-		<global-results>
-			<result name="logout" type="redirect">/index.jsp</result>
-		</global-results>
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<constant name="struts.multipart.maxSize" value="200000000"/>
+	<package name="xfh_user" namespace="/user" extends="struts-default">  
+        <interceptors>
+	        <interceptor name="timeoutSession" class="com.ldu.xfh.iterceptor.SessionIterceptor"></interceptor>
+	         
+	        <interceptor-stack name="timeoutStack">
+		        <interceptor-ref name="timeoutSession"></interceptor-ref>
+		        <interceptor-ref name="defaultStack"></interceptor-ref>
+	        </interceptor-stack>
+        </interceptors>
+ 
+        <default-interceptor-ref name="timeoutStack"/>
+        <global-results>
+            <result name="timeoutSession" type="redirect">/index.jsp</result>
+        </global-results> 
+        <!-- 注册 Action-->
 		<action name="register" class="com.ldu.xfh.action.UserRegisterAction" method="userRegister">
+			<interceptor-ref name="timeoutStack"></interceptor-ref>
 			<result name="success" type="redirect">/index.jsp</result>
+			
 			<result name="error" type="redirect">/register.jsp</result>
 			<result name="input">/register.jsp</result>
 		</action>
-		
-		<action name="*" class="com.ldu.xfh.action.UserLoginAction" method="user{1}">
+		<!-- 登陆Action -->
+		<action name="Login" class="com.ldu.xfh.action.LoginAction" method="userLogin">
+			<interceptor-ref name="timeoutStack"></interceptor-ref>
 			<result name="success">/jsp/msg/user_msg_show.jsp</result>
+			<result name="error" type="redirect">/index.jsp</result>
+		</action>
+		<!-- 修改信息或密码Action -->
+		<action name="*" class="com.ldu.xfh.action.UserLoginAction" method="user{1}">
+			<interceptor-ref name="timeoutStack"></interceptor-ref>
+			<result name="success">/jsp/msg/user_msg_show.jsp</result>
+			
 			<result name="error" type="redirect">
 				<param name="log_status">error</param>
 				<param name="location">/index.jsp</param> 
 			</result>
-			<result name="input">/index.jsp</result>
-		</action>
+			
+		</action>		
 	</package>
 	
 	<package name="xfh_phonebook" namespace="/phonebook" extends="struts-default">
@@ -28,7 +50,7 @@
 		</global-results>
 		<action name="*" class="com.ldu.xfh.action.PhoneBookAction" method="phoneBook{1}">
 			<result name="success">/jsp/phonebook/user_phonebook.jsp</result>
-			<result name="error">/index.jsp</result>
+			<result name="error" type="redirect">/index.jsp</result>
 		</action>
 	</package>
 	
@@ -40,22 +62,25 @@
 			<result name="success" type="stream">
 				<param name="contentType">image/jpg</param>
 				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">attachment; filename="download.jpg"</param>
+				<param name="contentDisposition">attachment; filename="${filename}"</param>
 				<param name="bufferSize">40960</param>
 			</result>
 		</action>
 		<action name="*" class="com.ldu.xfh.action.FileAction" method="file{1}">
-		<interceptor-ref name="fileUpload">
-				<param name="maximumSize">1000000</param>
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">200000000</param>
 				<param name="allowedType">
-					image/*
+					*/*
 				</param>
+				
 			</interceptor-ref>
-		
+			
 			<interceptor-ref name="defaultStack"/>
 				<param name="savePath">/resource/image</param>
-				<result name="input">/jsp/file/user_file.jsp</result>
+			
+				<result name="error">/jsp/file/user_file.jsp</result>
 				<result name="success">/jsp/file/user_file.jsp</result>
+				<result name="input">/jsp/file/user_file_upload.jsp</result>
 		</action>
 	</package>
 </struts>    

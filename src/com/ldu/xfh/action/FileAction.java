@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.print.attribute.standard.Severity;
-
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -29,9 +27,18 @@ public class FileAction extends ActionSupport implements SessionAware{
 	private Map<String,Object> session;
 	private FileEntity fileEntity;
 	private RelService<FileEntity> relService=new RelService<FileEntity>(){};
-	
+	private List<String> selectList; 
 
 	
+	
+	public List<String> getSelectList() {
+		return selectList;
+	}
+
+	public void setSelectList(List<String> selectList) {
+		this.selectList = selectList;
+	}
+
 	public String getUploadContentType() {
 		return uploadContentType;
 	}
@@ -76,6 +83,7 @@ public class FileAction extends ActionSupport implements SessionAware{
 		Integer id=Integer.parseInt(ServletActionContext.getRequest().getParameter("id"));
 		List<FileEntity> fileEntities=relService.getByParam(FileEntity.class,"id",id);
 		String filename=fileEntities.get(0).getFlname();
+		ActionContext.getContext().put("filename",new String(filename.getBytes(),"ISO-8859-1"));
 		return ServletActionContext.getServletContext().getResourceAsStream(path+"/"+filename);
 	}
 	
@@ -85,10 +93,19 @@ public class FileAction extends ActionSupport implements SessionAware{
 		}
 	
 	//文件上传
+	@SuppressWarnings("resource")
 	public String fileUpload()throws Exception{
 		FileOutputStream fos=new FileOutputStream(getSavePath()+"\\"+getUploadFileName());
+		
 		//定义输出流对象
 		FileInputStream fis=new FileInputStream(getUpload());
+		//上传文件不允许大于15M,
+		System.out.println(fis.available());
+		if(fis.available()>15000000){
+			ActionContext.getContext().put("msg","error");
+			return "input";
+		}
+			
 		byte[] buffer =new byte[1024];
 		int len=0;
 		while((len=fis.read(buffer))>0){
@@ -135,6 +152,16 @@ public class FileAction extends ActionSupport implements SessionAware{
 		return "success";
 	}
 	
+	//删除选中项
+	public String fileDeleteSelected() throws Exception{
+		for(String id:getSelectList()){
+			List<FileEntity> files=relService.getByParam(FileEntity.class,"id",Integer.parseInt(id));
+			relService.delete(files.get(0));
+			List<FileEntity> fileList=relService.getByParam(FileEntity.class,"userByUserId",(User)session.get("user"));
+			session.put("fileList",fileList);
+		}
+		return "success";
+	}
 	public FileEntity getFileEntity() {
 		return fileEntity;
 	}

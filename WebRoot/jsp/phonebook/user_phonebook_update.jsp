@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<c:if test="${linkMan.id==param.id }">
     			<div class="row">
    		<div class="col-xs-10 col-xs-offset-1">
-   			<form action="phonebook/Update">
+   			<form action="phonebook/Update" method="post">
 			<!--  指定user的id,因为hibernate的session缓存中的user.id为空  -->
    			<input type="hidden" name="linkMan.id" value="${linkMan.id}"/>
    			
@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				
     			</div>
     			<div class="form-group">
-    				电话:<input name="linkMan.lmphone" value="${linkMan.lmphone }"  required="required" class="form-control" placeholder="Phone"/>
+    				电话:<input name="linkMan.lmphone" value="${linkMan.lmphone }" pattern="^[0-9]{11}$"  title="电话号码应为11位数字" required="required" class="form-control" placeholder="Phone"/>
     			</div>
     			<div class="form-group">
 
